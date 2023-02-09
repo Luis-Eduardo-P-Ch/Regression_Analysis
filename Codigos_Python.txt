@@ -1,0 +1,382 @@
+   ********* Códigos de Python para el Análisis de Regresión*********
+
+
+
+********* Introducción*********
+
+1) Bienvenidos
+Mi primera línea de código con Python
+
+
+print("Bienvenidos")
+print("Aprendiendo con python")
+
+   
+2) Variables
+Es un nombre para referirse a un 'dato' que existe en el programa, que además pueden guardar un tipo particular de dato.
+
+bool: Boleando sólo tiene 2 valores o verdadero o falso. True o False
+str: String cadena de caracteres, es un texto. "Hola que tal"
+int: Entero, representa números enteros. 0, 99, -10
+float: Flotante representa números con punto decimal. 1.0, 0.0001 , -10.1
+
+
+mi_nombre: "Luis"
+print("mi_nombre")
+
+# Ejemplos de booleanos
+es_mayor_edad = False
+es_mujer = True
+
+##Ejemplos de cadenas
+nombre = "Eduardo"
+saludo = "Bienvenidos a UNEMI"
+
+##Ejemplos de enteros
+peso = 90
+numero_hijos = 2
+
+##Ejemplos de Flotantes
+estatura = 1.73
+pi = 3.1416
+
+Cómo podemos mostrar los prints de cada variable
+
+print(estatura)
+peso
+numero_hijos
+
+
+
+3) Operadores
+Desempeñan operaciones con variables y valores
+
+Aritméticos: +, -, *, /
+Comparación: >, >=, < , <=, !=, ==
+Lógicos: and, or, not
+
+https://www.w3schools.com/python/python_operators.asp
+
+
+3.1) Calculos
+
+# Aquí mis cálculos 
+# 4 + 2
+# peso + 2
+# estatura / peso
+# peso > 30
+# peso >= 85
+# nombre == "Eduardo"
+# es_mujer and es_mayor_edad
+# es_mujer and not es_mayor_edad
+es_mujer or es_mayor_edad
+
+
+4) Ejercicio Incial
+Calcular el Índice de masa corporal
+Utiliza las variables peso (kg) y estatura (m) La fórmula es:
+
+imc=peso/altura^2
+
+código: 
+peso = 75
+estatura = 1.61
+imc = peso / (estatura * estatura)
+imc 
+
+
+      
+                     ********ESTIMACIÓN MCO Simple *************
+
+Explicaremos las ventas(Y) de diez empresas en función de sus gastos respectivos en publicidad(x2)
+y el precio medio de sus productos x3. Especidicamos el modelo siguiente:
+
+
+         1) Creación de base de datos: 
+Utilizamos la biblioteca llamada pandas.
+
+import pandas as pd
+datos = pd.DataFrame({ "Y": [16, 18, 10, 13, 18, 38, 25,41, 11, 21], "X2": [0, 1, 4, 4, 2, 8, 5, 10, 3, 4], "X3": [13, 12, 19, 17, 13, 10, 11, 14, 17, 16]}, index=[ "empresa1","empresa2","empresa3", "empresa4","empresa5", "empresa6", "empresa7", "empresa8", "empresa9", "empresa10"])
+datos
+
+  #Creación de variable
+datos["X4"]= datos["X2"] + datos["X3"]
+datos
+
+Otros tipos de variables
+import numpy as np
+import math 
+
+datos["X5"]= datos["X3"].transform([np.log])       #Tambien puede ser np.sqrt, np.exp  
+
+
+2) Visualizamos los datos
+#nos muestra las primeras 5 filas
+datos.head()
+
+
+#nos muestra las ultimas 5 filas
+datos.tail()
+
+
+
+ 3) Análisis de los datos 
+
+#nos muestra estadisticos descriptivos
+datos.describe()
+
+datos.describe(include=['object'])  #lo usamos si tuviesemos object en la base
+
+#muestra la matrix de coorelacion
+corr=datos.corr()
+display(corr)
+#Usaremos un heatmap y para eso instalaremos la libreria seaborn
+import seaborn as sns
+sns.heatmap(corr, xticklabels= corr.columns, yticklabels= corr.columns, cmap="RdBu")
+
+
+Grafico de Barras  
+# @title Gráfica de Barras
+datos.plot.bar()
+datos.plot.bar("Y")
+datos.plot.bar("Y", "X2")
+datos.plot.bar("X2", "Y")
+
+#@title Gráfica de Pastel
+datos.plot.pie( y="X4", autopct='%1.1f%%')
+datos.plot.pie( y="X2", autopct='%1.1f%%')
+
+
+#Gráfico de disperción
+datos.plot.scatter( y="X2", x="X3")
+
+import matplotlib.pyplot as plt
+datos.plot.scatter( y="Y", x="X2")
+plt.title('Total Ventas de la Industria')
+plt.xlabel('Publicidad')
+plt.ylabel('Ventas')
+
+
+# Grafico de Regresión
+
+import seaborn as sns
+grafico simple
+sns.regplot(x='X2', y='Y', data=datos)
+
+Cambiemos el color
+sns.regplot(x='X2', y='Y', data=datos, color='green')
+plt.show()
+
+Cambiemos los puntos por +
+ax = sns.regplot(x='X2', y='Y', data=datos, color='green', marker='+')
+
+
+Ahora aumentemos el tamaño de la fuente
+sns.set(font_scale=1.5)
+ax = sns.regplot(x='X2', y='Y', data=datos, color='green', marker='+', scatter_kws={'s': 200})
+ax.set(xlabel='Year', ylabel='Total Immigration')
+ax.set_title('Total Immigration to Canada from 1980 - 2013')
+
+Ahora quitemos el fondo 
+sns.set(font_scale=1.5)
+sns.set_style('ticks')  
+
+ax = sns.regplot(x='X2', y='Y', data=datos, color='green', marker='+', scatter_kws={'s': 200})
+ax.set(xlabel='Year', ylabel='Total Immigration')
+ax.set_title('Total Immigration to Canada from 1980 - 2013')
+
+
+Ahora volvamos a cambiar el fondo
+sns.set(font_scale=1.5)
+sns.set_style('whitegrid')
+
+ax = sns.regplot(x='X2', y='Y', data=datos, color='green', marker='+', scatter_kws={'s': 200})
+ax.set(xlabel='Year', ylabel='Total Immigration')
+ax.set_title('Total Immigration to Canada from 1980 - 2013')
+
+
+#Analisis de dispersion e histograma juntos
+pd.plotting.scatter_matrix(datos, alpha = 1, figsize = (30,20))
+plt.show
+
+
+#Si fuesen series de tiempo podrías agregar un análisis de estacionariedad de variables 
+Test de Raíz Unitaria
+ho: No es estacionaria 
+h1: Es estacionaria
+            
+             Adf< Valor Crítico    Rechazmos la Ho
+             Adf > Valor crítico     No rechazmos la Ho
+  
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+from statsmodels.tsa.stattools import adfuller
+
+plt.plot(datos["Y"])
+plt.plot(datos["X2"])
+plt.plot(datos["X3"])
+
+adf= adfuller(datos.X2, maxlag=1)
+adf[0]            #Adf
+ 
+adf[4]             #Obtencion de los valores críticos
+
+
+   4) Para la Estimación MCO Simple
+Hay varias librerias de estimación, esta vez usaremos statsmodels
+
+
+import statsmodels.formula.api as smf
+
+
+#Estimación de los parámetros
+
+model=smf.ols('Y~X2',datos).fit()
+
+b0=model.params[0]
+b1=model.params[1]
+
+print(b0)
+print(b1)
+
+
+#Obtención del (Y estimado). Dos caminos:
+Camino uno:
+prediction1= b0+b1*datos['X2']
+prediction1
+
+Camino dos:
+prediction2=model.predict(datos)
+prediction2.tail()
+
+
+#Para que los datos aparezcan en una sola tabla
+
+datos['estimado']= model.predict(datos)
+datos['u']= datos['estimado']-datos['Y']
+
+datos
+
+5) Análisis de la regresión
+
+import matplotlib.pyplot as plt  
+
+plt.scatter(datos['X2'],datos['Y']) 
+plt.show()
+
+plt.scatter(datos['Y'],datos['estimado']) 
+plt.show()
+
+plt.scatter(datos['Y'],datos['estimado'], color='R') 
+plt.show()
+
+6) Análisis del error
+
+
+#análisis de los errores
+plt.scatter(datos['Y'], datos['u'])
+
+plt.plot(datos["u"])
+
+# Para calcular los intervalos de confianza, R cuadrado entre otras cosas
+
+model.summary()
+
+
+
+          ********ESTIMACIÓN MCO Múltiple*************
+
+
+1) Para la Estimación MCO Múltiple
+Hay varias librerias de estimación, esta vez usaremos statsmodels
+
+
+import statsmodels.formula.api as smf
+
+
+#Estimación de los parámetros
+
+model=smf.ols('Y~X2+X3',datos).fit()
+
+b0=model.params[0]
+b1=model.params[1]
+b2=model.params[2]
+
+print(b0)
+print(b1)
+print(b2)
+
+
+#Obtención del (Y estimado):
+
+Camino dos:
+prediction2=model.predict(datos)
+prediction2.tail()
+
+
+#Para que los datos me salgan en una solsa tabla
+
+datos['estimado']= model.predict(datos)
+datos['u']= datos['estimado']-datos['Y']
+
+datos
+
+
+2) Análisis de la regresión
+
+import matplotlib.pyplot as plt  
+
+plt.scatter(datos['Y'],datos['X3']) 
+plt.show()
+
+plt.scatter(datos['Y'],datos['estimado']) 
+plt.show()
+
+
+Para hacer un grafico con la linea de regresion
+
+sns.regplot(x="estimado", y="Y", data=datos)
+plt.ylim(0,)     "esta linea es para que los datos de la grafia empiezen desde 0"
+
+
+3) Análisis del error
+
+#análisis de los errores
+plt.scatter(datos['Y'], datos['u'])
+
+plt.plot(datos["u"])
+
+4) Analisis goblal
+# Para calcular los intervalos de confianza, R cuadrado entre otras cosas
+
+ model.summary()
+
+
+
+
+  #Finalmente:
+
+
+6) Como pasar una base de datos (exel, csv, etc) a un dataframe de pandas
+
+from google.colab  import files
+files.upload()                 "selecionar el archivo"
+
+**para que aparezca en el data frame se hace lo siguiente**
+
+import pandas as pd
+df=pd.read_excel('Nombredel archivo.xlsx')
+print(df)
+  
+
+
+-> Para ocultar los códigos se usa:
+# @title Nombre que queramos usar
+
+
+
+
+
